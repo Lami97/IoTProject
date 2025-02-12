@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperatura u Sobi</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-image: url("klima.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #17527a;
+            border: 2px solid rgb(7, 6, 100);
+            padding: 5px;
+        }
+
+        .temperature-display {
+            margin-top: 20px;
+        }
+
+        #temp-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #333;
+            border: 2px solid black;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+
+        #temp-description {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            border: 2px solid black;
+            height: 30px;
+            padding-top: 3px;
+        }
+
+        #temp-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        #temp-icon {
+            margin-right: 10px;
+        }
+
+        .optimal {
+            color: green;
+        }
+
+        .high {
+            color: red;
+        }
+
+        .low {
+            color: blue;
+        }
+
+        button {
+            width: 150px;
+            color: white;
+        }
+
+        #on {
+            background-color: rgb(201, 14, 41);
+
+        }
+
+        #off {
+            background-color: rgb(0, 105, 155);
+        }
+
+        button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            color: rgb(250, 247, 247);
+        }
+
+        #led-on {
+            background-color: rgb(0, 105, 155);
+            ;
+        }
+
+        #led-off {
+            background-color: rgb(201, 14, 41);
+        }
+
+        button {
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            background-color: rgb(0, 105, 155);
+            ;
+        }
+
+        #led-off {
+            background-color: rgb(201, 14, 41);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Smart air conditioner</h1>
+        <div class="temperature-display">
+            <div id="temp-value"></div>
+            <div id="temp-description"></div>
+            <div id="temp-status">
+                <i id="temp-icon" class="fas"></i>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGMOJazMKOa2QQdaEcjcll62AdthMuhlo",
+            authDomain: "smartesp8266-f9980.firebaseapp.com",
+            databaseURL: "https://smartesp8266-f9980-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "smartesp8266-f9980",
+            storageBucket: "smartesp8266-f9980.firebasestorage.app",
+            messagingSenderId: "772715673895",
+            appId: "1:772715673895:web:f18337b2e493fbb4a79102"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const temperatureRef = ref(database, '/Temperature');
+        onValue(temperatureRef, function (snapshot) {
+            const temperature = snapshot.val();  // Dohvaća trenutnu temperaturu
+            if (temperature !== null) {
+                console.log("Temperatura sa Firebase-a: ", temperature);
+                // Ažurira vrijednost u textboxu
+                document.getElementById('temp-value').innerHTML = `${temperature.toFixed(2)} °C`;
+                checkTemperatureStatus(temperature);
+            } else {
+                console.log("Podaci nisu dostupni.");
+                document.getElementById('temp-value').innerHTML = "Nema podataka";
+            }
+        });
+        function checkTemperatureStatus(temp) {
+            let statusMessage = "";
+
+            if (temp > 17 && temp < 22) {
+                statusMessage = "Temperatura je optimalna.";
+            } else if (temp > 21) {
+                statusMessage = "Temperatura je povišena.";
+            } else {
+                statusMessage = "Temperatura je niska.";
+            }
+
+            console.log("Status temperature: ", statusMessage);
+            // Ispisivanje poruke na stranici
+            document.getElementById('temp-description').innerHTML = statusMessage;
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
