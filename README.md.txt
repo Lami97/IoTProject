@@ -28,8 +28,8 @@ b) Uvjeriti se da je Arduino IDE instaliran.
 
 2️. Softverska podešavanja
 a) Instalirati potrebne biblioteke u Arduino IDE (Arduino.h, ESP8266WiFi.h, Firebase_ESP_Client.h).
-b) Otvori `firmware/main.ino` i učitaj kod na Arduino ploču.Napomena: Dodati svoj WiFi.
-c) Pokreni web aplikaciju za očitavanje podataka temperature na istu.
+b) Otvoriti ArduinoCodeSmartAirCon.ino i učitati kod na Arduino ploču.Napomena: Dodati svoj WiFi.
+c) Pokrenuti web aplikaciju za očitavanje podataka temperature na istu.
 
  📩 Kontakt
 Ako imate bilo kakvih pitanja, slobodno me kontaktirajte putem mog GitHub profila.
